@@ -39,7 +39,7 @@ public class OperacaoController {
 
     @GetMapping("index")
     @ResponseStatus(HttpStatus.OK)
-    public SearchHits<Operacao> findAllByIndex(@RequestParam("index") String index) {
+    public List<Operacao> findAllByIndex(@RequestParam("index") String index) {
         return this.operacaoService.findAllByIndex(index);
     }
 

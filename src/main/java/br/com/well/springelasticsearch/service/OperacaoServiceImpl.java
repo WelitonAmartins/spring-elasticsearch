@@ -54,9 +54,6 @@ public class OperacaoServiceImpl implements OperacaoService{
 
         elasticsearchOperations.index(indexQuery,IndexCoordinates.of(idIndex));
 
-
-
-
         List<IndexInformation> information = elasticsearchOperations.indexOps(IndexCoordinates.of(idIndex)).getInformation();
         Map<String, Object> mapping = elasticsearchOperations.indexOps(IndexCoordinates.of(idIndex)).getMapping();
 
@@ -78,10 +75,8 @@ public class OperacaoServiceImpl implements OperacaoService{
     }
 
     @Override
-    public SearchHits<Operacao> findAllByIndex(String index) {
-
-        //NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchAllQuery()).build();
-
+    public List<Operacao>findAllByIndex(String index) {
+        List<Operacao> listOperation = new ArrayList<>();
 
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.matchAllQuery())
@@ -93,17 +88,15 @@ public class OperacaoServiceImpl implements OperacaoService{
                                 Operacao.class,
                                 IndexCoordinates.of(index));
 
-//        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-//                .withQuery(matchAllQuery())
-//                .withIndices("idx-foo", "idx-bar")
-//                .build();
-
-       // List<ElasticEntity> elasticEntities = template.queryForList(searchQuery, ElasticEntity.class);
-//        logger.trace(elasticEntities.toString());
 
 
+        productHits.getSearchHits().forEach( valor -> {
+            Operacao operacao = new Operacao(valor.getContent().getId(), valor.getContent().getUser(), valor.getContent().getOperacao(), valor.getContent().getValor(), valor.getContent().getCategoria(), valor.getContent().getData());
 
-        return productHits;
+            listOperation.add(operacao);
+        });
+
+        return listOperation;
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface OperacaoService {
 
     public List<Operacao> findAllByUser(String user);
 
-    public SearchHits<Operacao> findAllByIndex(String index);
+    public List<Operacao> findAllByIndex(String index);
 
     public Operacao save(Operacao entity);
 
